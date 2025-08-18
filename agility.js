@@ -39,11 +39,8 @@ jQuery(document).ready(function($){
 		$(this).height($(this).prev().height());
 	});
 	
-	/* PRETTY PHOTO */
-	$("a[data-rel^='prettyPhoto']").prettyPhoto({
-		social_tools: '',
-		overlay_gallery: false
-	});
+	/* LIGHTBOX */
+	// Lightbox2 initializes automatically, no setup needed
 	
 	/* Expander for featured images */
 	$('.single-post-feature-expander').click(function(){
