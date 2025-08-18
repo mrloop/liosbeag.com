@@ -65,7 +65,11 @@
     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
   })();
 
-</script>
+  </script>
+
+  <script src="https://unpkg.com/maplibre-gl/dist/maplibre-gl.js"></script>
+  <link href="https://unpkg.com/maplibre-gl/dist/maplibre-gl.css" rel="stylesheet" />
+
 </head>
 <body class="skin-red bkg-fiber">
 
@@ -328,7 +332,16 @@ A 20% deposit is required on booking with the remainder payable 6 weeks prior to
 			</div>
 
 			<div class="one-third column">
-				<div class="map_canvas" data-lat="58.224201" data-lng="-6.951685" data-address="21a Bhaltos, Isle of Lewis" data-zoom="8" data-maptitle="Liosbeag" style="height:150px;width:100%;"></div>
+        <div id="map" style="width: 100%; height: 150px"></div>
+        <script>
+          const map = new maplibregl.Map({
+            style: 'https://tiles.openfreemap.org/styles/liberty',
+            center: [-6.951685, 58.224201],
+            zoom: 9.5,
+            container: 'map',
+            attributionControl: false,
+          })
+        </script>
 			</div>
 
 		</div>
@@ -366,14 +379,6 @@ A 20% deposit is required on booking with the remainder payable 6 weeks prior to
 
 <!-- Agility JS -->
 <script src="agility.js"></script>
-
-<!-- Google Maps API -->
-<script type="text/javascript" src="js%3Fsensor=false"></script>
-
-<!--[if (gte IE 6)&(lte IE 8)]>
-  <script type="text/javascript" src="javascripts/fix-ie.js"></script>
-<![endif]-->
-
 <!-- end Scripts -->
 
 
