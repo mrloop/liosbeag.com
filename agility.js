@@ -1,15 +1,3 @@
-var _____WB$wombat$assign$function_____ = function(name) {return (self._wb_wombat && self._wb_wombat.local_init && self._wb_wombat.local_init(name)) || self[name]; };
-if (!self.__WB_pmw) { self.__WB_pmw = function(obj) { this.__WB_source = obj; return this; } }
-{
-  let window = _____WB$wombat$assign$function_____("window");
-  let self = _____WB$wombat$assign$function_____("self");
-  let document = _____WB$wombat$assign$function_____("document");
-  let location = _____WB$wombat$assign$function_____("location");
-  let top = _____WB$wombat$assign$function_____("top");
-  let parent = _____WB$wombat$assign$function_____("parent");
-  let frames = _____WB$wombat$assign$function_____("frames");
-  let opener = _____WB$wombat$assign$function_____("opener");
-
 /*
  * agility.js
  * 
@@ -51,77 +39,21 @@ jQuery(document).ready(function($){
 		$(this).height($(this).prev().height());
 	});
 	
-	/* DROP PANEL */
-	$('#drop-panel-expando').click(function(e){
-		e.preventDefault();
-		$('.drop-panel').slideToggle();
-	});
-	
 	/* PRETTY PHOTO */
 	$("a[data-rel^='prettyPhoto']").prettyPhoto({
 		social_tools: '',
 		overlay_gallery: false
 	});
 	
-	/* MOBILE MENU */
-    $('.mobile-menu-button').click(function(e){
-    	e.preventDefault();
-    	var $menu = $($(this).attr('href'));
-    	$menu.toggleClass('menu-open'); //toggle()
-    	
-    	if(typeof $navClose !== 'undefined' && !$menu.hasClass('menu-open') ){
-    		console.log('hide');
-    		$navClose.hide();
-    	}
-    });
-	
 	/* Expander for featured images */
 	$('.single-post-feature-expander').click(function(){
 		$('.featured-image').toggleClass('full-width');
 	});
 	
-	//Size images in IE
-	imgSizer.collate();
-	
-    
-    //IPHONE, IPAD, IPOD
-    var deviceAgent = navigator.userAgent.toLowerCase();    
+	//Image Preloader for non-iOS devices
+	var deviceAgent = navigator.userAgent.toLowerCase();    
 	var is_iOS = deviceAgent.match(/(iphone|ipod|ipad)/);
 	
-	if (is_iOS) {
-        
-        $('#main-nav').prepend('<a href="#" class="nav-close">&times;</a>'); // Close Submenu
-        
-        var $navClose = $('.nav-close');
-        $navClose.hide().click(function(e){
-        	e.preventDefault();
-        	if(currentWindowWidth >= 767){
-        		$(this).hide();
-        	}
-        });
-		
-        $('#main-nav > ul > li').hover(function(e){
-        	e.preventDefault();
-        	if(currentWindowWidth < 767){
-        		$navClose.css({ 
-        			top : $(this).position().top + 33,
-        			left : '',
-        			right : 0
-        		}).show();
-        	}
-        	else{
-        		$navClose.css({
-        			left : $(this).position().left + parseInt($(this).css('marginLeft')),
-        			top : '',
-        			right : 'auto'
-        		}).show();
-        	}
-        });
-              
-	}
-	
-	
-	//NON-IOS
 	if(!is_iOS){
 		//iOS doesn't like CSS3 transitioning preloader, so don't use it
 		$('.preload').preloadImages({
@@ -130,81 +62,7 @@ jQuery(document).ready(function($){
 		$('.video-container').addClass('video-flex');
 	}
 	
-	
-	//ANDROID
-	var is_Android = deviceAgent.match(/(android)/);
-	if(is_Android){
-		//Do something special with Android
-	}
-    
-        
-    //IE automatic grid clears
-    if($.browser.msie){
-		$('.portfolio.col-4 article:nth-child(4n+1)').addClass('clear-grid');
-		$('.portfolio.col-3 article:nth-child(3n+1)').addClass('clear-grid');
-		$('.portfolio.col-2 article:nth-child(2n+1)').addClass('clear-grid');
-	}
-	
-	
-	//HTML5 Fallbacks
-	if(!Modernizr.input.placeholder){
-		$('.fallback').show();
-	}
-	
-	//Google Maps
-	if(typeof google.maps.LatLng !== 'undefined'){
-		$('.map_canvas').each(function(){
-			
-			var $canvas = $(this);
-			var dataZoom = $canvas.attr('data-zoom') ? parseInt($canvas.attr('data-zoom')) : 8;
-			
-			var latlng = $canvas.attr('data-lat') ? 
-							new google.maps.LatLng($canvas.attr('data-lat'), $canvas.attr('data-lng')) :
-							new google.maps.LatLng(40.7143528, -74.0059731);
-					
-			var myOptions = {
-				zoom: dataZoom,
-				mapTypeId: google.maps.MapTypeId.ROADMAP,
-				center: latlng
-			};
-					
-			var map = new google.maps.Map(this, myOptions);
-			
-			if($canvas.attr('data-address')){
-				var geocoder = new google.maps.Geocoder();
-				geocoder.geocode({ 
-						'address' : $canvas.attr('data-address') 
-					},
-					function(results, status) {					
-						if (status == google.maps.GeocoderStatus.OK) {
-							map.setCenter(results[0].geometry.location);
-							var marker = new google.maps.Marker({
-								map: map,
-								position: results[0].geometry.location,
-								title: $canvas.attr('data-mapTitle')
-							});
-						}
-				});
-			}
-		});
-	}
-	
-	//Twitter
-	if($('#tweet').size() > 0){
-		getTwitters('tweet', { 
-			id: 'sevenspark', 
-			count: 1, 
-			enableLinks: true, 
-			ignoreReplies: true, 
-			clearContents: true,
-			template: '%text% <a href="https://web.archive.org/web/20160801174833/http://twitter.com/%user_screen_name%/statuses/%id_str%/" class="tweet-time" target="_blank">%time%</a>'+
-						'<a href="https://web.archive.org/web/20160801174833/http://twitter.com/%user_screen_name%" class="twitter-account" title="Follow %user_screen_name% on Twitter" target="_blank" ><img src="%user_profile_image_url%" /></a>'
-		});
-	}
-	
 });
-
-
 
 //Image Preloader
 jQuery.fn.preloadImages = function(options){
@@ -230,97 +88,8 @@ jQuery.fn.preloadImages = function(options){
 			
 		});
 		
-		if($image[0].complete || (jQuery.browser.msie )) { 
-			$image.trigger('load');	//IE has glitchy load triggers, so trigger it automatically
+		if($image[0].complete) { 
+			$image.trigger('load');
 		}
     });
 }
-
-
-/* IE Image Resizing - by Ethan Marcotte - http://unstoppablerobotninja.com/entry/fluid-images/ */
-var imgSizer = {
-	Config : {
-		imgCache : []
-		,spacer : "../images/spacer.gif"
-	}
-
-	,collate : function(aScope) {
-		var isOldIE = (document.all && !window.opera && !window.XDomainRequest) ? 1 : 0;
-		if (isOldIE && document.getElementsByTagName) {
-			var c = imgSizer;
-			var imgCache = c.Config.imgCache;
-
-			var images = (aScope && aScope.length) ? aScope : document.getElementsByTagName("img");
-			for (var i = 0; i < images.length; i++) {
-				images[i].origWidth = images[i].offsetWidth;
-				images[i].origHeight = images[i].offsetHeight;
-
-				imgCache.push(images[i]);
-				c.ieAlpha(images[i]);
-				images[i].style.width = "100%";
-			}
-
-			if (imgCache.length) {
-				c.resize(function() {
-					for (var i = 0; i < imgCache.length; i++) {
-						var ratio = (imgCache[i].offsetWidth / imgCache[i].origWidth);
-						imgCache[i].style.height = (imgCache[i].origHeight * ratio) + "px";
-					}
-				});
-			}
-		}
-	}
-
-	,ieAlpha : function(img) {
-		var c = imgSizer;
-		if (img.oldSrc) {
-			img.src = img.oldSrc;
-		}
-		var src = img.src;
-		img.style.width = img.offsetWidth + "px";
-		img.style.height = img.offsetHeight + "px";
-		img.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + src + "', sizingMethod='scale')"
-		img.oldSrc = src;
-		img.src = c.Config.spacer;
-	}
-
-	// Ghettomodified version of Simon Willison's addLoadEvent() -- http://simonwillison.net/2004/May/26/addLoadEvent/
-	,resize : function(func) {
-		var oldonresize = window.onresize;
-		if (typeof window.onresize != 'function') {
-			window.onresize = func;
-		} else {
-			window.onresize = function() {
-				if (oldonresize) {
-					oldonresize();
-				}
-				func();
-			}
-		}
-	}
-}
-
-
-
-
-}
-/*
-     FILE ARCHIVED ON 17:48:33 Aug 01, 2016 AND RETRIEVED FROM THE
-     INTERNET ARCHIVE ON 21:04:52 Dec 15, 2024.
-     JAVASCRIPT APPENDED BY WAYBACK MACHINE, COPYRIGHT INTERNET ARCHIVE.
-
-     ALL OTHER CONTENT MAY ALSO BE PROTECTED BY COPYRIGHT (17 U.S.C.
-     SECTION 108(a)(3)).
-*/
-/*
-playback timings (ms):
-  captures_list: 0.636
-  exclusion.robots: 0.024
-  exclusion.robots.policy: 0.01
-  esindex: 0.012
-  cdx.remote: 5.772
-  LoadShardBlock: 54.763 (3)
-  PetaboxLoader3.datanode: 119.573 (4)
-  load_resource: 188.281
-  PetaboxLoader3.resolve: 42.041
-*/
