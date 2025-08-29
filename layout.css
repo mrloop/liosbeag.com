@@ -74,6 +74,19 @@ body {
   font: 14px/21px "Open Sans", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
+/* Prevent layout shift for all images */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Specific dimensions for content images to prevent layout shift */
+.feature-column img,
+.bloglist img {
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
 .wrap {
   background: #FFFFFF;
 }
@@ -498,6 +511,21 @@ a.mobile-menu-button {
   -moz-border-radius: 0px;
   -o-border-radius: 0px;
   border-radius: 0px;
+  /* Set minimum height to prevent layout shift but allow FlexSlider to control positioning */
+  min-height: 400px;
+}
+
+/* Remove aspect-ratio from slides to allow FlexSlider's natural behavior */
+.wrap .flexslider .slides {
+  position: relative;
+  overflow: hidden;
+}
+
+.wrap .flexslider .slides img {
+  width: 100%;
+  height: auto;
+  display: block;
+  /* Remove aspect-ratio and object-fit to preserve FlexSlider functionality */
 }
 
 .wrap .flex-caption {
@@ -548,76 +576,64 @@ a.mobile-menu-button {
 }
 
 /* Direction Nav */
+/* FlexSlider Direction Navigation */
 .wrap .flex-direction-nav {
-  display: none;
   position: absolute;
   width: 100%;
   top: 50%;
   margin-top: -25px;
-  display: block\9;
-  /*IE needs this */
+  z-index: 10;
 }
 
 .wrap .flex-direction-nav li a {
   margin: 0;
   display: block;
-  background: url(/images/slider_arrows.png) no-repeat 0 0;
   position: absolute;
   top: 0;
   cursor: pointer;
-  text-indent: -9999px;
-  background-color: #222;
-  background-color: rgba(0, 0, 0, .1);
-  color: #fff;
-  width: 20px;
-  height: 20px;
-  font-size: 20px;
-  padding: 15px;
-  border-radius: 50px;
-  -moz-border-radius: 50px;
-  -webkit-border-radius: 50px;
-  -o-border-radius: 50px;
-  text-decoration: none;
-  text-align: center;
-
-  font-weight: normal;
-
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
-
-}
-
-.wrap .flex-direction-nav li a:hover {
-  background-color: #222;
   background-color: rgba(0, 0, 0, .3);
-
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
-}
-
-.wrap .flex-direction-nav li a.next {
-  background-position: -50px 0;
-  right: 20px;
-  /*-21px;*/
-}
-
-.wrap .flex-direction-nav li a.prev {
-  background-position: 0 0;
-  left: 20px;
-  /* -20px;*/
-}
-
-.wrap .flex-direction-nav li a.disabled {
-  opacity: .3;
-  filter: alpha(opacity=30);
-  cursor: default;
-}
-
-/* Control Nav */
-.wrap .flex-control-nav {
-  display: none;
-  width: 100%;
-  position: absolute;
-  bottom: 20px;
+  color: #fff;
+  width: 40px;
+  height: 40px;
+  font-size: 40px;
+  text-indent: 0;
   text-align: center;
+  line-height: 40px;
+  border-radius: 3px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  font-family: "flexslider-icon";
+}
+
+.wrap .flex-direction-nav li a:before {
+  color: rgba(255, 255, 255, 0.8) !important;
+  text-shadow: none !important;
+}
+
+.wrap .flex-direction-nav li a.flex-prev {
+  left: 10px;
+}
+
+.wrap .flex-direction-nav li a.flex-next {
+  right: 10px;
+}
+
+/* Show navigation on hover */
+.wrap .flex-container:hover .flex-direction-nav li a {
+  opacity: 1;
+}
+
+.wrap .flex-container:hover .flex-control-nav {
+  display: block;
+}
+
+/* FlexSlider Control Navigation */
+.wrap .flex-control-nav {
+  position: absolute;
+  bottom: 10px;
+  width: 100%;
+  text-align: center;
+  z-index: 10;
 }
 
 .wrap .flex-video-slider .flex-control-nav {
@@ -641,8 +657,7 @@ a.mobile-menu-button {
   height: 13px;
   display: block;
   background-image: none;
-  background-color: #444;
-  background-color: rgba(0, 0, 0, .1);
+  background-color: rgba(255, 255, 255, .7);
   cursor: pointer;
   text-indent: -9999px;
 
@@ -664,12 +679,22 @@ a.mobile-menu-button {
 .wrap .flex-control-nav li a.active {
   background-position: 0 -26px;
   cursor: default;
-  background-color: #000;
-  background-color: rgba(0, 0, 0, .4);
+  background-color: rgba(255, 255, 255, .9);
 }
 
 /* Only show on hover */
-.wrap .flex-container:hover .flex-direction-nav,
+/* Ensure flex-container has relative positioning */
+.wrap .flex-container {
+  position: relative;
+  /* Ensure container takes up proper space to prevent layout shift */
+  min-height: 400px;
+}
+
+/* Show navigation on hover */
+.wrap .flex-container:hover .flex-direction-nav li a {
+  opacity: 1;
+}
+
 .wrap .flex-container:hover .flex-control-nav {
   display: block;
 }
@@ -726,6 +751,10 @@ a.img-link.preload {
   background-image: url(/images/ajax-loader.gif);
   background-repeat: no-repeat;
   background-position: 50% 50%;
+  /* Ensure container has dimensions while loading */
+  display: block;
+  position: relative;
+  overflow: hidden;
 }
 
 .preload img {
@@ -735,6 +764,9 @@ a.img-link.preload {
   -o-transition: all 1s ease-in-out;
   -moz-transition: all 1s ease-in-out;
   transition: all 1s ease-in-out;
+  /* Ensure image takes space immediately */
+  width: 100%;
+  height: auto;
 }
 
 .preload img.loading {
@@ -2949,13 +2981,83 @@ img.scale-with-grid {
     text-align: left;
   }
 
+  /* Mobile FlexSlider fixes */
+  .wrap .flexslider {
+    min-height: 200px; /* Reduce height for mobile */
+  }
+  
+  .wrap .flex-container {
+    min-height: 200px; /* Match FlexSlider height */
+  }
+  
+  .wrap .flexslider .slides img {
+    width: 100%;
+    height: 200px; /* Fixed height for consistency */
+    object-fit: cover; /* Crop to fit while maintaining aspect ratio */
+  }
+  
+  /* Hide navigation dots on mobile for cleaner look */
+  .wrap .flex-control-nav {
+    display: none !important;
+  }
+  
+  /* Adjust direction nav for mobile */
+  .wrap .flex-direction-nav li a {
+    width: 30px;
+    height: 30px;
+    font-size: 24px;
+    line-height: 30px;
+    opacity: 0.8; /* More visible on mobile */
+  }
+  
+  .wrap .flex-direction-nav li a.flex-prev {
+    left: 5px;
+  }
+  
+  .wrap .flex-direction-nav li a.flex-next {
+    right: 5px;
+  }
+  
+  /* Caption adjustments for mobile */
+  .wrap .flex-container .flex-caption {
+    font-size: 0.8em;
+    padding: 1%;
+    width: 98%;
+  }
+  
+  .wrap .flex-container h5,
+  .wrap #main .flex-container h5 {
+    font-size: 0.9em;
+    margin-bottom: 0;
+  }
+
 }
 
 /* Mobile Landscape Size to Tablet Portrait (devices and browsers) */
 @media only screen and (min-width: 480px) and (max-width: 767px) {}
 
 /* Mobile Portrait Size to Mobile Landscape Size (devices and browsers) */
-@media only screen and (max-width: 479px) {}
+@media only screen and (max-width: 479px) {
+  
+  /* Very small screens - further reduce FlexSlider height */
+  .wrap .flexslider {
+    min-height: 150px;
+  }
+  
+  .wrap .flex-container {
+    min-height: 150px;
+  }
+  
+  .wrap .flexslider .slides img {
+    height: 150px; /* Even smaller for portrait phones */
+  }
+  
+  /* Hide direction nav on very small screens to avoid clutter */
+  .wrap .flex-direction-nav {
+    display: none;
+  }
+  
+}
 
 
 

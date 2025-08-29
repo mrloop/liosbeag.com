@@ -23,17 +23,17 @@ jQuery(document).ready(function($){
 	var $flexSlider = $('.flexslider');
 	$flexSlider.flexslider({
 		animation: "slide",
-		controlsContainer: ".flex-container",
+		directionNav: true,
+		controlNav: true,
+		animationLoop: true,
+		slideshow: true,
+		slideshowSpeed: 7000,
+		animationSpeed: 600,
+		pauseOnAction: true,
+		pauseOnHover: true,
 		prevText: "&larr;",
 		nextText: "&rarr;",
-		pausePlay:true,
-		pauseOnHover:true,
-		before:	function($slider){
-			$slider.find('.flex-caption').fadeOut('fast');			
-		},
-		after: function($slider){
-			$slider.find('.flex-caption').fadeIn();			
-		}
+		controlsContainer: ".flex-container"
 	});
 	$('.height-expand').each(function(){
 		$(this).height($(this).prev().height());
